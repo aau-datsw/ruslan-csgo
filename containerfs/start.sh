@@ -25,6 +25,8 @@ rcon_password "$RCON_PASSWORD"
 sv_password "$SERVER_PASSWORD"
 sv_lan 0
 sv_cheats 0
+get5_check_auths 0
+sv_region 3
 SERVERCFG
 
 ./srcds_run \
