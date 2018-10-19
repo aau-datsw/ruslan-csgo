@@ -5,6 +5,8 @@ export SERVER_PASSWORD="${SERVER_PASSWORD:-changeme}"
 export RCON_PASSWORD="${RCON_PASSWORD:-changeme}"
 export STEAM_ACCOUNT="${STEAM_ACCOUNT:-changeme}"
 export IP="${IP:-0.0.0.0}"
+export PORT="${IP:-27015}"
+export GO_PORT="${IP:-27020}"
 export TICKRATE="${TICKRATE:-128}"
 export GAME_TYPE="${GAME_TYPE:-0}"
 export GAME_MODE="${GAME_MODE:-1}"
@@ -30,13 +32,16 @@ SERVERCFG
   -usercon \
   -game csgo \
   -tickrate $TICKRATE \
-  -port 27015 \
+  -port $PORT \
   -maxplayers_override $MAXPLAYERS \
+  -autoupdate \
+  -ip $IP \
   +game_type $GAME_TYPE \
   +game_mode $GAME_MODE \
   +mapgroup $MAPGROUP \
   +map $MAP \
   +ip $IP \
+  +net_public_adr $IP \
   +sv_setsteamaccount $STEAM_ACCOUNT \
-  +tv_port 27020
+  +tv_port $GO_PORT \
   +exec custom

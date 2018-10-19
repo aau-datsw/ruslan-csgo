@@ -44,4 +44,3 @@ RUN ln -s $HOME/csserver/bin/steamclient.so $HOME/.steam/sdk32/steamclient.so
 WORKDIR $SERVER
 
 CMD ["./start.sh"]
-EXPOSE 27015 27020
