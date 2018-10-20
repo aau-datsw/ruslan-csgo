@@ -27,6 +27,9 @@ sv_lan 0
 sv_cheats 0
 get5_check_auths 0
 sv_region 3
+tv_port $GO_PORT
+tv_enable 1
+tv_delay 120
 SERVERCFG
 
 ./srcds_run \
