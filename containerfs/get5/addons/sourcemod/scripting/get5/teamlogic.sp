@@ -1,5 +1,5 @@
 public Action Command_JoinGame(int client, const char[] command, int argc) {
-  if (g_GameState == GameState_None) {
+  if (g_GameState == Get5State_None) {
     return Plugin_Continue;
   }
 
@@ -31,12 +31,12 @@ public Action Command_JoinTeam(int client, const char[] command, int argc) {
     return Plugin_Stop;
 
   // Don't do anything if not live/not in startup phase.
-  if (g_GameState == GameState_None) {
+  if (g_GameState == Get5State_None) {
     return Plugin_Continue;
   }
 
   // Don't enforce team joins.
-  if (g_CheckAuthsCvar.IntValue == 0) {
+  if (!g_CheckAuthsCvar.BoolValue) {
     return Plugin_Continue;
   }
 
@@ -71,7 +71,7 @@ public Action Command_JoinTeam(int client, const char[] command, int argc) {
     int count = CountPlayersOnCSTeam(csTeam);
 
     if (count >= g_PlayersPerTeam) {
-      if (g_CoachingEnabledCvar.IntValue == 0) {
+      if (!g_CoachingEnabledCvar.BoolValue) {
         KickClient(client, "%t", "TeamIsFullInfoMessage");
       } else {
         LogDebug("Forcing player %N to coach", client);
@@ -96,7 +96,7 @@ public void MoveClientToCoach(int client) {
     return;
   }
 
-  if (g_CoachingEnabledCvar.IntValue == 0) {
+  if (!g_CoachingEnabledCvar.BoolValue) {
     return;
   }
 
@@ -130,11 +130,11 @@ public void MoveClientToCoach(int client) {
 }
 
 public Action Command_SmCoach(int client, int args) {
-  if (g_GameState == GameState_None) {
+  if (g_GameState == Get5State_None) {
     return Plugin_Continue;
   }
 
-  if (g_CoachingEnabledCvar.IntValue == 0) {
+  if (!g_CoachingEnabledCvar.BoolValue) {
     return Plugin_Handled;
   }
 
@@ -143,11 +143,11 @@ public Action Command_SmCoach(int client, int args) {
 }
 
 public Action Command_Coach(int client, const char[] command, int argc) {
-  if (g_GameState == GameState_None) {
+  if (g_GameState == Get5State_None) {
     return Plugin_Continue;
   }
 
-  if (g_CoachingEnabledCvar.IntValue == 0) {
+  if (!g_CoachingEnabledCvar.BoolValue) {
     return Plugin_Handled;
   }
 
@@ -159,7 +159,7 @@ public Action Command_Coach(int client, const char[] command, int argc) {
     return Plugin_Stop;
   }
 
-  if (g_MovingClientToCoach[client] || g_CheckAuthsCvar.IntValue == 0) {
+  if (g_MovingClientToCoach[client] || !g_CheckAuthsCvar.BoolValue) {
     LogDebug("Command_Coach: %L, letting pass-through", client);
     return Plugin_Continue;
   }
@@ -169,7 +169,7 @@ public Action Command_Coach(int client, const char[] command, int argc) {
 }
 
 public MatchTeam GetClientMatchTeam(int client) {
-  if (g_CheckAuthsCvar.IntValue == 0) {
+  if (!g_CheckAuthsCvar.BoolValue) {
     return CSTeamToMatchTeam(GetClientTeam(client));
   } else {
     char auth[AUTH_LENGTH];
@@ -206,7 +206,7 @@ public MatchTeam CSTeamToMatchTeam(int csTeam) {
 }
 
 public MatchTeam GetAuthMatchTeam(const char[] steam64) {
-  if (g_GameState == GameState_None) {
+  if (g_GameState == Get5State_None) {
     return MatchTeam_TeamNone;
   }
 
@@ -260,7 +260,7 @@ public MatchTeam GetCaptainTeam(int client) {
 
 public int GetTeamCaptain(MatchTeam team) {
   // If not forcing auths, take the 1st client on the team.
-  if (g_CheckAuthsCvar.IntValue == 0) {
+  if (!g_CheckAuthsCvar.BoolValue) {
     for (int i = 1; i <= MaxClients; i++) {
       if (IsAuthedPlayer(i) && GetClientMatchTeam(i) == team) {
         return i;

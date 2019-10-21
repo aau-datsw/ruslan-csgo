@@ -13,6 +13,7 @@ export GAME_MODE="${GAME_MODE:-1}"
 export MAP="${MAP:-de_dust2}"
 export MAPGROUP="${MAPGROUP:-mg_active}"
 export MAXPLAYERS="${MAXPLAYERS:-12}"
+export IS_LAN="${IS_LAN:-0}"
 
 : ${SERVER:?"ERROR: SERVER IS NOT SET!"}
 
@@ -23,7 +24,7 @@ cat << SERVERCFG > $SERVER/csgo/cfg/server.cfg
 hostname "$SERVER_HOSTNAME"
 rcon_password "$RCON_PASSWORD"
 sv_password "$SERVER_PASSWORD"
-sv_lan 0
+sv_lan "$IS_LAN"
 sv_cheats 0
 get5_check_auths 0
 sv_region 3
@@ -33,6 +34,7 @@ tv_delay 120
 SERVERCFG
 
 ./srcds_run \
+  -debug \
   -console \
   -usercon \
   -game csgo \

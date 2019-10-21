@@ -8,7 +8,7 @@ public void ResetReadyStatus() {
 }
 
 public bool IsReadyGameState() {
-  return g_GameState == GameState_PreVeto || g_GameState == GameState_Warmup;
+  return g_GameState == Get5State_PreVeto || g_GameState == Get5State_Warmup;
 }
 
 // Client ready status
@@ -54,7 +54,7 @@ public bool IsSpectatorsReady() {
 }
 
 public bool IsTeamReady(MatchTeam team) {
-  if (g_GameState == GameState_Live) {
+  if (g_GameState == Get5State_Live) {
     return true;
   }
 
@@ -204,9 +204,9 @@ public Action Command_ForceReadyClient(int client, int args) {
 static void PrintReadyMessage(MatchTeam team) {
   CheckTeamNameStatus(team);
 
-  if (g_GameState == GameState_PreVeto) {
+  if (g_GameState == Get5State_PreVeto) {
     Get5_MessageToAll("%t", "TeamReadyToVetoInfoMessage", g_FormattedTeamNames[team]);
-  } else if (g_GameState == GameState_Warmup) {
+  } else if (g_GameState == Get5State_Warmup) {
     SideChoice sides = view_as<SideChoice>(g_MapSides.Get(GetMapNumber()));
     if (g_WaitingForRoundBackup) {
       Get5_MessageToAll("%t", "TeamReadyToRestoreBackupInfoMessage", g_FormattedTeamNames[team]);
@@ -242,6 +242,11 @@ public void MissingPlayerInfoMessageTeam(MatchTeam team) {
 // Helpers
 
 public void UpdateClanTags() {
+  if (!g_SetClientClanTagCvar.BoolValue) {
+    LogMessage("Not setting client clang tags because get5_set_client_clan_tags is 0");
+    return;
+  }
+
   char readyTag[32], notReadyTag[32];
   Format(readyTag, sizeof(readyTag), "%T", "ReadyTag", LANG_SERVER);
   Format(notReadyTag, sizeof(notReadyTag), "%T", "NotReadyTag", LANG_SERVER);

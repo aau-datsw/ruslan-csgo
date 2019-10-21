@@ -23,12 +23,13 @@
 #include <cstrike>
 #include <sourcemod>
 
+
 #include "get5/util.sp"
 #include "get5/version.sp"
 
 #include <SteamWorks>
-#include <smjansson>
 
+#include <json> // github.com/clugg/sm-json
 #include "get5/jsonhelpers.sp"
 
 #pragma semicolon 1
@@ -78,17 +79,18 @@ public Action Command_Avaliable(int client, int args) {
     versionCvar.GetString(versionString, sizeof(versionString));
   }
 
-  Handle json = json_object();
+  JSON_Object json = new JSON_Object();
 
-  set_json_int(json, "gamestate", view_as<int>(Get5_GetGameState()));
-  set_json_int(json, "avaliable", 1);
-  set_json_string(json, "plugin_version", versionString);
+  json.SetInt("gamestate", view_as<int>(Get5_GetGameState()));
+  json.SetInt("avaliable", 1); // legacy version since I'm bad at spelling
+  json.SetInt("available", 1);
+  json.SetString("plugin_version", versionString);
 
   char buffer[128];
-  json_dump(json, buffer, sizeof(buffer));
+  json.Encode(buffer, sizeof(buffer));
   ReplyToCommand(client, buffer);
 
-  CloseHandle(json);
+  delete json;
 
   return Plugin_Handled;
 }
@@ -357,7 +359,7 @@ public void Get5_OnSeriesResult(MatchTeam seriesWinner, int team1MapScore, int t
 }
 
 public void Get5_OnRoundStatsUpdated() {
-  if (Get5_GetGameState() == GameState_Live) {
+  if (Get5_GetGameState() == Get5State_Live) {
     UpdateRoundStats(MapNumber());
   }
 }
