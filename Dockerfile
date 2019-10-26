@@ -35,6 +35,7 @@ COPY containerfs/steamworks $SERVER/csgo
 COPY containerfs/get5 $SERVER/csgo
 COPY containerfs/custom_config $SERVER/csgo/cfg
 
+COPY containerfs/match.json $SERVER/csgo/match.json
 COPY containerfs/start.sh $SERVER/start.sh
 
 # Fix for missing library

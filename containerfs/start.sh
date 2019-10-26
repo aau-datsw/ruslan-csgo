@@ -27,6 +27,7 @@ sv_password "$SERVER_PASSWORD"
 sv_lan "$IS_LAN"
 sv_cheats 0
 get5_check_auths 0
+get5_autoload_config match.json
 sv_region 3
 tv_port $GO_PORT
 tv_enable 1
