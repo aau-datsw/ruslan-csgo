@@ -1,0 +1,35 @@
+{
+  "matchid": "example_match",
+  "num_maps": 1,
+  "players_per_team": 5,
+  "min_players_to_ready": 2,
+  "min_spectators_to_ready": 0,
+  "skip_veto": false,
+  "veto_first": "team1",
+  "side_type": "standard",
+  "maplist": [
+    "de_vertigo",
+    "de_dust2",
+    "de_inferno",
+    "de_mirage",
+    "de_nuke",
+    "de_overpass",
+    "de_train"
+  ],
+  "team1": {
+    "name": "Team1",
+    "tag": "T1",
+    "flag": "SE",
+    "logo": "0"
+  },
+  "team2": {
+    "name": "Team2",
+    "tag": "T2",
+    "flag": "RU",
+    "logo": "0"
+  },
+  "cvars": {
+    "hostname": "Match server #1",
+    "get5_check_auths": 0
+  }
+}
