@@ -10,14 +10,16 @@ It's primary use is for the annual LAN-party, for new students at Aalborg Univer
 
 First pull from `frederikspang/ruslan-csgo`, then run the server; here for 27010, and GOTV on 27011.
 
-The docker image exposes 27015 as gameport and 27020 as TV port.
+The docker image exposes $PORT as gameport and $GO_PORT as TV port, and should be adjusted in docker bindings, and env-variables.
 
 ```bash
 docker pull frederikspang/ruslan-csgo
-docker run -d -p 27010:27015 -p 27010:27015/udp -p 27011:27020 -p 27011:27020/udp \
+docker run -d -p 27010:27010 -p 27010:27010/udp -p 27011:27011 -p 27011:27011/udp \
   -e "STEAM_ACCOUNT=MYAPIKEY" \
   -e "SERVER_HOSTNAME=SERVERNAME" \
   -e "SERVER_PASSWORD=SERVERPASS" \
   -e "RCON_PASSWORD=RCON_PASS" \
+  -e "PORT=27010" \
+  -e "PORT=27011" \
   frederikspang/ruslan-csgo
 ```
