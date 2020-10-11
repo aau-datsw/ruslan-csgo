@@ -20,6 +20,6 @@ docker run -d -p 27010:27010 -p 27010:27010/udp -p 27011:27011 -p 27011:27011/ud
   -e "SERVER_PASSWORD=SERVERPASS" \
   -e "RCON_PASSWORD=RCON_PASS" \
   -e "PORT=27010" \
-  -e "PORT=27011" \
+  -e "GO_PORT=27011" \
   frederikspang/ruslan-csgo
 ```
