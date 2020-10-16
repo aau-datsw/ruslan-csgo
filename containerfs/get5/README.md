@@ -33,7 +33,7 @@ Get5 also aims to make it easy to build automation for it. Commands are added so
 ## Download and Installation
 
 #### Requirements
-You must have sourcemod installed on the game server. You can download it at http://www.sourcemod.net/downloads.php. Note that sourcemod also requires MetaMod:Source to be on the server. You can download it at http://www.metamodsource.net/downloads.php.
+You must have sourcemod installed on the game server. You can download it at http://www.sourcemod.net/downloads.php. Note that sourcemod also requires MetaMod:Source to be on the server. You can download it at http://www.metamodsource.net/downloads.php. You must have a 1.9+ build of sourcemod.
 
 #### Download
 Download a release package from the [releases section](https://github.com/splewis/get5/releases) or a [the latest development build](http://ci.splewis.net/job/get5/lastSuccessfulBuild/).
@@ -52,6 +52,8 @@ The get5 releases contain 2 additional plugins, disabled by default. They are in
 ##### get5_apistats
 
 ``get5_apistats`` is for integration with the [get5 web panel](https://github.com/splewis/get5-web). You don't need it unless you're using the web panel. Note you need the [Steamworks](https://forums.alliedmods.net/showthread.php?t=229556) extension for this plugin.
+
+**NOTE**: The HTTP API requests this plugin sends are **not** part of a public API. They are the communication between this plugin and the [get5-web](https://github.com/splewis/get5-web) project; you should not rely on the API being stable. If you're a developer writing your own server listening to get5_apistats, consider forking the get5_apistats plugin and renaming it to something else.
 
 ##### get5_mysqlstats
 
@@ -102,7 +104,7 @@ Some client commands are available also for admin usage. For example, sm_pause a
 - ``get5_removeplayer``: removes a steamid from all teams (any format for steamid)
 - ``get5_forceready``: marks all teams as ready
 - ``get5_dumpstats``: dumps current match stats to a file
-- ``get5_status``: replies with JSON formatted match state (available to all clients, requires [SMJansson](https://forums.alliedmods.net/showthread.php?t=184604))
+- ``get5_status``: replies with JSON formatted match state (available to all clients)
 - ``get5_listbackups``: lists backup files for the current matchid or a given matchid
 
 #### Other commands
@@ -112,8 +114,6 @@ Some client commands are available also for admin usage. For example, sm_pause a
 ## Match Schema
 
 See the example config in [Valve KeyValues format](configs/get5/example_match.cfg) or [JSON format](configs/get5/example_match.json) to learn how to format the configs. Both example files contain equivalent match data.
-
-**Note:** to use a JSON match file, you must install the [SMJansson](https://forums.alliedmods.net/showthread.php?t=184604) sourcemod extension on the server.
 
 Of the below fields, only the ``team1`` and ``team2`` fields are actually required. Reasonable defaults are used for entires (bo3 series, 5v5, empty strings for team names, etc.)
 
@@ -142,7 +142,7 @@ Only ``name`` and ``players`` are required.
 - ``tag``: team tag (or short name), this replaces client "clan tags"
 - ``flag``: team flag (2 letter country code, wraps ``mp_teamflag_1``)
 - ``logo`` team logo (wraps ``mp_teamlogo_1``)
-- ``players``: list of Steam id's for users on the team (not used if ``get5_check_auths`` is set to 0)
+- ``players``: list of Steam id's for users on the team (not used if ``get5_check_auths`` is set to 0). You can also force player names in here; in JSON you may use either an array of steamids or a dictionary of steamids to names.
 - ``series_score``: current score in the series, this can be used to give a team a map advantage or used as a manual backup method, defaults to 0
 - ``matchtext``: wraps ``mp_teammatchstat_1``, you probably don't want to set this, in BoX series mp_teamscore cvars are automatically set and take the place of the mp_teammatchstat cvars
 
@@ -159,14 +159,14 @@ You should either set these in the above file, or in the match config's ``cvars`
 
 Get5 can be interacted with in several ways. At a glance:
 
-1. You can write another sourcemod plugin that uses the [get5 natives and forwards](scripting/include/get5.inc). This is exactly what the [get5_apistats](scripting/get5_apistats.sp) and [get5_mysqlstats](get5_mysqlstats.sp) plugins do.
+1. You can write another sourcemod plugin that uses the [get5 natives and forwards](scripting/include/get5.inc). This is exactly what the [get5_apistats](scripting/get5_apistats.sp) and [get5_mysqlstats](get5_mysqlstats.sp) plugins do. Considering starting from those plugin and making any changes you want (forking the get5 plugin itself is strongly discouraged; but just making another plugin using the get5 plugin api like get5_apistats does is encouraged).
 
 1. You can read [event logs](https://github.com/splewis/get5/wiki/Event-logs) from a file on disk (set by ``get5_event_log_format``), through a RCON
-connection to the server console since they are outputted there, or through another sourcemod plugin (see #1).
+connection to the server console since they are output there, or through another sourcemod plugin (see #1).
 
-1. You can read the [stats](https://github.com/splewis/get5/wiki/Stats-system) get5 collects from a file on disk (set by ``get5_stats_path_format``), or through another sourcemod (see #1).
+1. You can read the [stats](https://github.com/splewis/get5/wiki/Stats-system) get5 collects from a file on disk (set by ``get5_stats_path_format``), or through another sourcemod plugin (see #1).
 
-1. You can execute the ``get5_loadmatch`` command or ``get5_loadmatch_url`` commands via another plugin or via a RCON connection to begin matches. Of course, you could execute any get5 command as well.
+1. You can execute the ``get5_loadmatch`` command or ``get5_loadmatch_url`` commands via another plugin or via a RCON connection to begin matches. Of course, you could execute any get5 command you want as well.
 
 ## Other things
 

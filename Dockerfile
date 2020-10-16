@@ -34,6 +34,7 @@ COPY containerfs/sourcemod $SERVER/csgo
 COPY containerfs/steamworks $SERVER/csgo
 COPY containerfs/get5 $SERVER/csgo
 COPY containerfs/custom_config $SERVER/csgo/cfg
+COPY containerfs/custom_config/get5.cfg $SERVER/csgo/cfg/sourcemod/get5.cfg
 
 COPY containerfs/match.json $SERVER/csgo/match.json
 COPY containerfs/start.sh $SERVER/start.sh
