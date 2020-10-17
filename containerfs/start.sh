@@ -44,6 +44,7 @@ SERVERCFG
   -maxplayers_override $MAXPLAYERS \
   -autoupdate \
   -ip $IP \
+  -hltv \
   +game_type $GAME_TYPE \
   +game_mode $GAME_MODE \
   +mapgroup $MAPGROUP \
@@ -51,5 +52,6 @@ SERVERCFG
   +ip $IP \
   +net_public_adr $IP \
   +sv_setsteamaccount $STEAM_ACCOUNT \
+  +tv_enable 1 \
   +tv_port $GO_PORT \
   +exec custom
